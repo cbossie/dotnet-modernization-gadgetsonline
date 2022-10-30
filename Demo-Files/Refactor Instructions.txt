@@ -1,0 +1,22 @@
+Extracted Service:
+1) Add DTO.cs and DTOHelper.cs
+
+2) Delete Migrations
+
+3) Comment out initializer
+
+4) ShoppingCartControllers line 154
+return Ok(DTOHelper.GetGetDTOCartList(myInstance.GetCartItems(shoppingCartId)));
+
+5) Nuget Update:
+Update-Package -reinstall Microsoft.AspNet.WebApi.Client
+
+
+Original Code
+1) Add the API to the Web.config
+
+2) Nuget Update:
+Update-Package -reinstall Microsoft.AspNet.WebApi.Client
+
+3) Update the Web URL to a new port
+
