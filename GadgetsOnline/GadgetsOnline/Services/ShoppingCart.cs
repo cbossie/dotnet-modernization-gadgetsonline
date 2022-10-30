@@ -9,21 +9,12 @@ namespace GadgetsOnline.Services
     public class ShoppingCart
     {
         GadgetsOnlineEntities store = new GadgetsOnlineEntities();
-        string ShoppingCartId { get; set; }
 
-        public static ShoppingCart GetCart(string shoppingCartId)
-        {
-            return new ShoppingCart()
-            {
-                ShoppingCartId = shoppingCartId
-            };
-        }
-
-        internal int CreateOrder(Order order)
+        internal int CreateOrder(string shoppingCartId, Order order)
         {
             decimal orderTotal = 0;
 
-            var cartItems = GetCartItems();
+            var cartItems = GetCartItems(shoppingCartId);
 
             // Iterate over the items in the cart, adding the order details for each
             foreach (var item in cartItems)
@@ -50,15 +41,15 @@ namespace GadgetsOnline.Services
             store.SaveChanges();
 
             // Empty the shopping cart
-            EmptyCart();
+            EmptyCart(shoppingCartId);
 
             // Return the OrderId as the confirmation number
             return order.OrderId;
         }
 
-        private void EmptyCart()
+        private void EmptyCart(string shoppingCartId)
         {
-            var cartItems = store.Carts.Where(cart => cart.CartId == ShoppingCartId);
+            var cartItems = store.Carts.Where(cart => cart.CartId == shoppingCartId);
 
             foreach (var cartItem in cartItems)
             {
@@ -69,10 +60,10 @@ namespace GadgetsOnline.Services
             store.SaveChanges();
         }
 
-        public void AddToCart(int id)
+        public void AddToCart(string shoppingCartId, int id)
         {            
             var cartItem = store.Carts.SingleOrDefault(
-                        c => c.CartId == ShoppingCartId
+                        c => c.CartId == shoppingCartId
                         && c.ProductId == id);
 
 
@@ -82,7 +73,7 @@ namespace GadgetsOnline.Services
                 cartItem = new Cart
                 {
                     ProductId = id,
-                    CartId = ShoppingCartId,
+                    CartId = shoppingCartId,
                     Count = 1,
                     DateCreated = DateTime.Now
                 };
@@ -99,20 +90,20 @@ namespace GadgetsOnline.Services
             store.SaveChanges();
         }
 
-        public int GetCount()
+        public int GetCount(string shoppingCartId)
         {
             int? count = (from cartItems in store.Carts
-                          where cartItems.CartId == ShoppingCartId
+                          where cartItems.CartId == shoppingCartId
                           select (int?)cartItems.Count).Sum();
 
             return count ?? 0;
         }
 
-        internal int RemoveFromCart(int id)
+        internal int RemoveFromCart(string shoppingCartId, int id)
         {
             // Get the cart
             var cartItem = store.Carts.Single(
-                            cart => cart.CartId == ShoppingCartId
+                            cart => cart.CartId == shoppingCartId
                             && cart.ProductId == id);
 
             int itemCount = 0;
@@ -136,15 +127,15 @@ namespace GadgetsOnline.Services
             return itemCount;
         }
 
-        public List<Cart> GetCartItems()
+        public List<Cart> GetCartItems(string shoppingCartId)
         {
-            return store.Carts.Where(cart => cart.CartId == ShoppingCartId).ToList();
+            return store.Carts.Where(cart => cart.CartId == shoppingCartId).ToList();
         }
 
-        public decimal GetTotal()
+        public decimal GetTotal(string shoppingCartId)
         {
             decimal? total = (from cartItems in store.Carts
-                              where cartItems.CartId == ShoppingCartId
+                              where cartItems.CartId == shoppingCartId
                               select (int?)cartItems.Count * cartItems.Product.Price).Sum();
             return total ?? decimal.Zero;
 

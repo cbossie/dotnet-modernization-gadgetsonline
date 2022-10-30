@@ -15,8 +15,8 @@ namespace GadgetsOnline.Services
             store.SaveChanges();
 
             //Process the order
-            var cart = ShoppingCart.GetCart(shoppingCartId);
-            cart.CreateOrder(order);
+            var cart = new ShoppingCart();
+            cart.CreateOrder(shoppingCartId, order);
 
             return true;
         }

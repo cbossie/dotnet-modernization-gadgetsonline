@@ -17,22 +17,22 @@ namespace GadgetsOnline.Controllers
         // GET: ShoppingCart
         public ActionResult Index()
         {
-            var cart = ShoppingCart.GetCart(GetCartId());
+            var cart = new ShoppingCart();
             // Set up our ViewModel
             var viewModel = new ShoppingCartViewModel
             {
-                CartItems = cart.GetCartItems(),
-                CartTotal = cart.GetTotal()
+                CartItems = cart.GetCartItems(GetCartId()),
+                CartTotal = cart.GetTotal(GetCartId())
             };
             // Return the view
             return View(viewModel);
         }
 
         public ActionResult AddToCart(int id)
-        {            
-            var cart = ShoppingCart.GetCart(GetCartId());
+        {
+            var cart = new ShoppingCart();
             
-            cart.AddToCart(id);
+            cart.AddToCart(GetCartId(), id);
 
             // Go back to the main store page for more shopping
             return RedirectToAction("Index");
@@ -40,8 +40,8 @@ namespace GadgetsOnline.Controllers
 
         public ActionResult RemoveFromCart(int id)
         {
-            var cart = ShoppingCart.GetCart(GetCartId());
-            int itemCount = cart.RemoveFromCart(id);
+            var cart = new ShoppingCart();
+            int itemCount = cart.RemoveFromCart(GetCartId(), id);
             inventory = new Inventory();
             var productName = inventory.GetProductNameById(id);
 
@@ -49,8 +49,8 @@ namespace GadgetsOnline.Controllers
             var results = new ShoppingCartRemoveViewModel
             {
                 Message = Server.HtmlEncode(productName) + " has been removed from your shopping cart.",
-                CartTotal = cart.GetTotal(),
-                CartCount = cart.GetCount(),
+                CartTotal = cart.GetTotal(GetCartId()),
+                CartCount = cart.GetCount(GetCartId()),
                 ItemCount = itemCount,
                 DeleteId = id
             };
