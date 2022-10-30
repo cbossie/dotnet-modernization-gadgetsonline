@@ -8,7 +8,7 @@ using GadgetsOnline.Services;
 
 namespace GadgetsOnline.Controllers
 {
-    public class CheckoutController : Controller
+    public class CheckoutController : GadgetsOnlineControllerBase
     {
         OrderProcessing orderProcessing;
         private OrderProcessing GetOrderProcess()
@@ -44,7 +44,7 @@ namespace GadgetsOnline.Controllers
                 order.Username = "Anonymous";
                 order.OrderDate = DateTime.Now;
 
-                bool result = GetOrderProcess().ProcessOrder(order, this.HttpContext);
+                bool result = GetOrderProcess().ProcessOrder(order, GetCartId());
 
                 return RedirectToAction("Complete",
                     new { id = order.OrderId });

@@ -8,7 +8,7 @@ using GadgetsOnline.Services;
 
 namespace GadgetsOnline.Controllers
 {
-    public class StoreController : Controller
+    public class StoreController : GadgetsOnlineControllerBase
     {
         Inventory inventory;       
 

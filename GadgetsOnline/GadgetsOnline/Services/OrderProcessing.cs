@@ -9,13 +9,13 @@ namespace GadgetsOnline.Services
     public class OrderProcessing
     {
         GadgetsOnlineEntities store = new GadgetsOnlineEntities();
-        internal bool ProcessOrder(Order order, HttpContextBase httpContext)
+        internal bool ProcessOrder(Order order, string shoppingCartId)
         {
             store.Orders.Add(order);
             store.SaveChanges();
 
             //Process the order
-            var cart = ShoppingCart.GetCart(httpContext);
+            var cart = ShoppingCart.GetCart(shoppingCartId);
             cart.CreateOrder(order);
 
             return true;

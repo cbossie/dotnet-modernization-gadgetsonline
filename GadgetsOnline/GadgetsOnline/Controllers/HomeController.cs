@@ -7,7 +7,7 @@ using System.Web.Mvc;
 
 namespace GadgetsOnline.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : GadgetsOnlineControllerBase
     {
         Inventory inventory;        
 

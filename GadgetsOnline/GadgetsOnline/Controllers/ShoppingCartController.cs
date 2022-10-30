@@ -9,7 +9,7 @@ using GadgetsOnline.ViewModel;
 
 namespace GadgetsOnline.Controllers
 {
-    public class ShoppingCartController : Controller
+    public class ShoppingCartController : GadgetsOnlineControllerBase
     {
 
         Inventory inventory;
@@ -17,7 +17,7 @@ namespace GadgetsOnline.Controllers
         // GET: ShoppingCart
         public ActionResult Index()
         {
-            var cart = ShoppingCart.GetCart(this.HttpContext);
+            var cart = ShoppingCart.GetCart(GetCartId());
             // Set up our ViewModel
             var viewModel = new ShoppingCartViewModel
             {
@@ -30,7 +30,7 @@ namespace GadgetsOnline.Controllers
 
         public ActionResult AddToCart(int id)
         {            
-            var cart = ShoppingCart.GetCart(this.HttpContext);
+            var cart = ShoppingCart.GetCart(GetCartId());
             
             cart.AddToCart(id);
 
@@ -40,7 +40,7 @@ namespace GadgetsOnline.Controllers
 
         public ActionResult RemoveFromCart(int id)
         {
-            var cart = ShoppingCart.GetCart(this.HttpContext);
+            var cart = ShoppingCart.GetCart(GetCartId());
             int itemCount = cart.RemoveFromCart(id);
             inventory = new Inventory();
             var productName = inventory.GetProductNameById(id);
