@@ -8,8 +8,12 @@ Extracted Service:
 4) ShoppingCartControllers line 154
 return Ok(DTOHelper.GetGetDTOCartList(myInstance.GetCartItems(shoppingCartId)));
 
+DO THESE IN SECRET
+
 5) Nuget Update:
 Update-Package -reinstall Microsoft.AspNet.WebApi.Client
+
+6) ShoppingCart Controller - Line 56 -> Change to string
 
 
 Original Code
